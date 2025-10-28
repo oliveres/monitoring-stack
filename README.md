@@ -110,7 +110,8 @@ Use HTTPS with Basic Authentication via Caddy reverse proxy.
 ## Documentation
 
 - [Architecture Details](./docs/ARCHITECTURE.md) - Deep dive into the design
-- [Setup Guide](./docs/SETUP.md) - Step-by-step deployment instructions
+- [Setup Guide](./docs/SETUP.md) - Step-by-step deployment with Portainer
+- [Manual Deployment](./docs/MANUAL-DEPLOYMENT.md) - Deploy without Portainer using Docker Compose CLI
 - [VPC Setup](./docs/VPC-SETUP.md) - DigitalOcean VPC configuration
 - [Troubleshooting](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 

@@ -28,7 +28,7 @@ Quick start guide to deploy the distributed monitoring stack in 30 minutes.
 
 - [ ] Docker 20.10+ on all servers
 - [ ] Docker Compose 2.0+ on all servers
-- [ ] Portainer installed on all servers
+- [ ] Portainer installed on all servers (optional, see [Manual Deployment](./docs/MANUAL-DEPLOYMENT.md))
 - [ ] Domain name for central server (e.g., `monitoring.example.com`)
 - [ ] GitHub account for hosting repositories
 - [ ] DigitalOcean account (if using VPC) OR access to any cloud/VPS provider
@@ -281,7 +281,8 @@ See [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) for more solutions.
 
 ### Documentation
 - [Architecture Deep Dive](./docs/ARCHITECTURE.md)
-- [Complete Setup Guide](./docs/SETUP.md)
+- [Complete Setup Guide](./docs/SETUP.md) (with Portainer)
+- [Manual Deployment Guide](./docs/MANUAL-DEPLOYMENT.md) (without Portainer)
 - [VPC Configuration](./docs/VPC-SETUP.md)
 - [Git Submodules Setup](./docs/GIT-SETUP.md)
 

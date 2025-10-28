@@ -7,3 +7,12 @@
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres
+[submodule "grafana"]
+	path = grafana
+	url = https://github.com/oliveres/monitoring-grafana.git
+[submodule "edge-basic"]
+	path = edge-basic
+	url = https://github.com/oliveres/monitoring-edge-basic.git
+[submodule "edge-postgres"]
+	path = edge-postgres
+	url = https://github.com/oliveres/monitoring-edge-postgres.git

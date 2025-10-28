@@ -116,8 +116,13 @@ sudo apt-get install apache2-utils
 # Generate bcrypt hash
 htpasswd -nbB remote yourpassword
 
-# Output: remote:$2a$12$...
+# Output example: remote:$2y$05$bQlNNr5rxpTLAY5DouzSL...
 # Copy only the hash part (after "remote:")
+
+# IMPORTANT: In .env file, escape $ signs by doubling them ($$)
+# Example:
+# From htpasswd: $2y$05$bQlNNr...
+# In .env:       $$2y$$05$$bQlNNr...
 ```
 
 ### Step 4: Deploy Stack

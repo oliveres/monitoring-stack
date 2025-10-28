@@ -100,9 +100,13 @@ sudo apt-get install apache2-utils
 # Generate bcrypt hash
 htpasswd -nbB remote your-password
 
-# Copy the hash (everything after "remote:")
-# Example output: remote:$2y$05$...
-# Use only: $2y$05$...
+# Example output: remote:$2y$05$bQlNNr5rxpTLAY5DouzSL...
+# Copy only the hash part (after "remote:")
+
+# IMPORTANT: When entering in Portainer environment variables,
+# escape $ signs by doubling them ($$)
+# From htpasswd: $2y$05$bQlNNr...
+# In Portainer:  $$2y$$05$$bQlNNr...
 ```
 
 ### 2.5 Verify Central Stack

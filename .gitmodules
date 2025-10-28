@@ -4,6 +4,6 @@
 #   git clone --recurse-submodules <repo-url>
 #
 # To add submodules (replace YOUR-USERNAME with your GitHub username):
-#   git submodule add https://github.com/YOUR-USERNAME/monitoring-central.git central
+#   git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres

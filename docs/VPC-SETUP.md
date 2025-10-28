@@ -137,7 +137,7 @@ curl http://10.116.0.2:9090/-/healthy
 
 ### 4.1 Update docker-compose.yml
 
-Edit `monitoring-central/docker-compose.yml`:
+Edit `monitoring-grafana/docker-compose.yml`:
 
 ```yaml
 services:

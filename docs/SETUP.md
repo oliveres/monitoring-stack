@@ -13,7 +13,7 @@ Complete step-by-step guide to deploy the distributed monitoring stack.
 ## Overview
 
 You'll deploy **3 separate Git repositories**:
-1. `monitoring-central` - Central monitoring server
+1. `monitoring-grafana` - Central monitoring server
 2. `monitoring-edge-basic` - Edge agents (standard hosts)
 3. `monitoring-edge-postgres` - Edge agents (PostgreSQL hosts)
 
@@ -23,7 +23,7 @@ Create three new repositories on GitHub:
 
 ```bash
 # On GitHub, create these repositories:
-1. monitoring-central (private recommended)
+1. monitoring-grafana (private recommended)
 2. monitoring-edge-basic (private recommended)
 3. monitoring-edge-postgres (private recommended)
 ```
@@ -68,8 +68,8 @@ monitoring.example.com  →  A record  →  <central-server-ip>
 2. Go to **Stacks** → **Add stack**
 3. Select **Git Repository**
 4. Configure:
-   - **Name**: `monitoring-central`
-   - **Repository URL**: `https://github.com/YOUR-USERNAME/monitoring-central`
+   - **Name**: `monitoring-grafana`
+   - **Repository URL**: `https://github.com/YOUR-USERNAME/monitoring-grafana`
    - **Branch**: `main`
    - **Compose path**: `docker-compose.yml`
    - **Authentication**: Configure if private repo
@@ -254,7 +254,7 @@ Pre-configured dashboards will be auto-provisioned. To import additional:
 
 ### 7.1 Add Alertmanager to Central Stack
 
-Edit `monitoring-central/docker-compose.yml`:
+Edit `monitoring-grafana/docker-compose.yml`:
 
 ```yaml
   alertmanager:
@@ -418,10 +418,10 @@ curl -H "Authorization: Bearer <api-key>" \
 
 ```bash
 # Check Prometheus data size
-du -sh /var/lib/docker/volumes/monitoring-central_prometheus-data
+du -sh /var/lib/docker/volumes/monitoring-grafana_prometheus-data
 
 # Check Loki data size
-du -sh /var/lib/docker/volumes/monitoring-central_loki-data
+du -sh /var/lib/docker/volumes/monitoring-grafana_loki-data
 
 # Set up alerts for disk usage in Grafana
 ```

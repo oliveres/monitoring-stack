@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an **umbrella repository** for a distributed monitoring stack using Git submodules. The actual stack implementations are in separate repositories:
 
-- `monitoring-central` - Central server with Grafana, Prometheus, Loki, Caddy
+- `monitoring-grafana` - Central server with Grafana, Prometheus, Loki, Caddy
 - `monitoring-edge-basic` - Edge agent with exporters and log collectors
 - `monitoring-edge-postgres` - Edge agent with PostgreSQL monitoring
 
@@ -21,7 +21,7 @@ monitoring-stack/           # This umbrella repo (documentation only)
 │   ├── SETUP.md           # Deployment instructions
 │   ├── VPC-SETUP.md       # DigitalOcean VPC configuration
 │   └── TROUBLESHOOTING.md # Common issues
-├── central/               # Git submodule → monitoring-central repo
+├── grafana/               # Git submodule → monitoring-grafana repo
 ├── edge-basic/            # Git submodule → monitoring-edge-basic repo
 └── edge-postgres/         # Git submodule → monitoring-edge-postgres repo
 ```
@@ -42,7 +42,7 @@ git clone --recurse-submodules https://github.com/USER/monitoring-stack.git
 
 ### Add Submodules (First Time Setup)
 ```bash
-git submodule add https://github.com/USER/monitoring-central.git central
+git submodule add https://github.com/USER/monitoring-grafana.git central
 git submodule add https://github.com/USER/monitoring-edge-basic.git edge-basic
 git submodule add https://github.com/USER/monitoring-edge-postgres.git edge-postgres
 git commit -m "Add monitoring stack submodules"
@@ -138,7 +138,7 @@ git push
 
 ### Add New Dashboard
 ```bash
-cd central/grafana/provisioning/dashboards
+cd grafana/grafana/provisioning/dashboards
 # Add new .json dashboard file
 git add new-dashboard.json
 git commit -m "Add new dashboard"
@@ -198,7 +198,7 @@ POSTGRES_DATA_SOURCE_NAME=postgresql://user:pass@host:5432/db?sslmode=disable
 
 - Check [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) first
 - View container logs: `docker logs monitoring-<service>`
-- Test connectivity: `curl http://central-ip:9090/-/healthy`
+- Test connectivity: `curl http://grafana-ip:9090/-/healthy`
 - Verify environment variables in Portainer
 
 ## Migration from Single-Host Setup

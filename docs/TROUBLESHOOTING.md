@@ -189,7 +189,7 @@ docker exec monitoring-caddy cat /etc/caddy/Caddyfile
 **Diagnosis:**
 ```bash
 # Check all containers are on same network
-docker network inspect monitoring-central_monitoring
+docker network inspect monitoring-grafana_monitoring
 
 # Check datasource URLs in Grafana
 # Grafana → Configuration → Data sources

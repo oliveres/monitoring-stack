@@ -34,7 +34,7 @@ This monitoring stack uses a **distributed architecture** with:
 
 This is an **umbrella repository** using Git submodules for each stack:
 
-- **[monitoring-central](./central/)** - Central monitoring server stack
+- **[monitoring-grafana](./grafana/)** - Central monitoring server stack
 - **[monitoring-edge-basic](./edge-basic/)** - Edge agent for standard Docker hosts
 - **[monitoring-edge-postgres](./edge-postgres/)** - Edge agent with PostgreSQL monitoring
 
@@ -48,7 +48,7 @@ Deploy on a dedicated DigitalOcean droplet:
 
 ```bash
 # In Portainer, create new stack from Git:
-Repository: https://github.com/YOUR-USERNAME/monitoring-central
+Repository: https://github.com/YOUR-USERNAME/monitoring-grafana
 Branch: main
 Compose file: docker-compose.yml
 ```
@@ -125,7 +125,7 @@ git clone --recurse-submodules https://github.com/YOUR-USERNAME/monitoring-stack
 To add submodules (for maintainers):
 
 ```bash
-git submodule add https://github.com/YOUR-USERNAME/monitoring-central.git central
+git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres
 ```

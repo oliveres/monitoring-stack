@@ -1,5 +1,5 @@
 # Git submodules directories (tracked by .gitmodules)
-central/
+grafana/
 edge-basic/
 edge-postgres/
 

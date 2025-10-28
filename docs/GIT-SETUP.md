@@ -7,7 +7,7 @@ This guide explains how to set up the Git repositories and submodules for the di
 The monitoring stack uses **4 GitHub repositories**:
 
 1. **monitoring-stack** (umbrella repo) - Documentation and submodule references
-2. **monitoring-central** - Central server stack
+2. **monitoring-grafana** - Central server stack
 3. **monitoring-edge-basic** - Edge agent without PostgreSQL
 4. **monitoring-edge-postgres** - Edge agent with PostgreSQL monitoring
 
@@ -21,7 +21,7 @@ Go to GitHub and create **4 new repositories**:
    - Description: "Distributed monitoring infrastructure with Prometheus, Loki, and Grafana"
    - Initialize: No (we'll push existing code)
 
-2. `monitoring-central` (Private recommended)
+2. `monitoring-grafana` (Private recommended)
    - Description: "Central monitoring server with Grafana, Prometheus, Loki, and Caddy"
    - Initialize: No
 
@@ -38,7 +38,7 @@ Go to GitHub and create **4 new repositories**:
 After creating, note the Git URLs:
 ```
 https://github.com/YOUR-USERNAME/monitoring-stack.git
-https://github.com/YOUR-USERNAME/monitoring-central.git
+https://github.com/YOUR-USERNAME/monitoring-grafana.git
 https://github.com/YOUR-USERNAME/monitoring-edge-basic.git
 https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git
 ```
@@ -48,7 +48,7 @@ https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git
 ### 2.1 Push Central Stack
 
 ```bash
-cd /path/to/monitoring-stack/central
+cd /path/to/monitoring-stack/grafana
 
 # Initialize git
 git init
@@ -62,10 +62,10 @@ git commit -m "Initial commit: Central monitoring stack
 - Prometheus with remote write receiver (2y retention)
 - Loki for log aggregation (3 months retention)
 - Grafana with auto-provisioned datasources
-- Promtail for central server logs"
+- Promtail for grafana server logs"
 
 # Add remote and push
-git remote add origin https://github.com/YOUR-USERNAME/monitoring-central.git
+git remote add origin https://github.com/YOUR-USERNAME/monitoring-grafana.git
 git push -u origin main
 ```
 
@@ -120,7 +120,7 @@ git push -u origin main
 cd /path/to/monitoring-stack
 
 # Remove stack directories (they'll be added as submodules)
-rm -rf central edge-basic edge-postgres
+rm -rf grafana edge-basic edge-postgres
 
 # Initialize git (if not already)
 git init
@@ -147,8 +147,8 @@ Now add the three stack repositories as submodules:
 ```bash
 cd /path/to/monitoring-stack
 
-# Add central stack as submodule
-git submodule add https://github.com/YOUR-USERNAME/monitoring-central.git central
+# Add grafana stack as submodule
+git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git central
 
 # Add edge-basic stack as submodule
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
@@ -157,7 +157,7 @@ git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edg
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres
 
 # Commit submodule additions
-git add .gitmodules central edge-basic edge-postgres
+git add .gitmodules grafana edge-basic edge-postgres
 git commit -m "Add monitoring stacks as submodules"
 git push origin main
 ```
@@ -171,7 +171,7 @@ git push origin main
 git submodule status
 
 # Should show:
-#  <commit-hash> central (heads/main)
+#  <commit-hash> grafana (heads/main)
 #  <commit-hash> edge-basic (heads/main)
 #  <commit-hash> edge-postgres (heads/main)
 ```
@@ -186,7 +186,7 @@ Should contain:
 ```
 [submodule "central"]
     path = central
-    url = https://github.com/YOUR-USERNAME/monitoring-central.git
+    url = https://github.com/YOUR-USERNAME/monitoring-grafana.git
 [submodule "edge-basic"]
     path = edge-basic
     url = https://github.com/YOUR-USERNAME/monitoring-edge-basic.git
@@ -206,7 +206,7 @@ git clone --recurse-submodules https://github.com/YOUR-USERNAME/monitoring-stack
 cd monitoring-stack
 
 # Verify submodules are populated
-ls central edge-basic edge-postgres
+ls grafana edge-basic edge-postgres
 ```
 
 ### 5.2 Update Existing Clone (If Already Cloned)
@@ -227,7 +227,7 @@ git submodule update --init --recursive
 ### 6.1 Make Changes to a Stack
 
 ```bash
-cd monitoring-stack/central
+cd monitoring-stack/grafana
 
 # Make changes
 vim docker-compose.yml
@@ -240,7 +240,7 @@ git push origin main
 # Update umbrella repo to track new commit
 cd ..
 git add central
-git commit -m "Update central stack to latest version"
+git commit -m "Update grafana stack to latest version"
 git push origin main
 ```
 
@@ -253,7 +253,7 @@ cd monitoring-stack
 git submodule update --remote --merge
 
 # Commit the updates
-git add central edge-basic edge-postgres
+git add grafana edge-basic edge-postgres
 git commit -m "Update all stacks to latest versions"
 git push origin main
 ```
@@ -263,12 +263,12 @@ git push origin main
 ```bash
 cd monitoring-stack
 
-# Update only central stack
+# Update only grafana stack
 git submodule update --remote --merge central
 
 # Commit
 git add central
-git commit -m "Update central stack"
+git commit -m "Update grafana stack"
 git push origin main
 ```
 
@@ -281,7 +281,7 @@ Now that repositories are on GitHub, configure Portainer:
 1. Portainer → Stacks → Add stack
 2. Select "Git Repository"
 3. Configure:
-   - **Repository URL**: `https://github.com/YOUR-USERNAME/monitoring-central`
+   - **Repository URL**: `https://github.com/YOUR-USERNAME/monitoring-grafana`
    - **Branch**: `main`
    - **Compose path**: `docker-compose.yml`
    - **Authentication**: If private repo, add credentials
@@ -333,7 +333,7 @@ git rm --cached central
 rm -rf central
 
 # Commit removal
-git commit -m "Remove central submodule"
+git commit -m "Remove grafana submodule"
 ```
 
 ### Submodule Push Permission Denied

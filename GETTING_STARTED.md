@@ -41,7 +41,7 @@ Quick start guide to deploy the distributed monitoring stack in 30 minutes.
 
 Create 4 new repositories on GitHub:
 - `monitoring-stack` (umbrella)
-- `monitoring-central`
+- `monitoring-grafana`
 - `monitoring-edge-basic`
 - `monitoring-edge-postgres`
 
@@ -51,7 +51,7 @@ Create 4 new repositories on GitHub:
 # From your local monitoring-stack directory
 cd central
 git init && git add . && git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR-USERNAME/monitoring-central.git
+git remote add origin https://github.com/YOUR-USERNAME/monitoring-grafana.git
 git push -u origin main
 
 cd ../edge-basic
@@ -90,8 +90,8 @@ Wait 5-10 minutes for DNS propagation.
 
 1. Open Portainer: `https://<server-ip>:9443`
 2. Go to **Stacks** → **Add stack**
-3. Name: `monitoring-central`
-4. Git Repository: `https://github.com/YOUR-USERNAME/monitoring-central`
+3. Name: `monitoring-grafana`
+4. Git Repository: `https://github.com/YOUR-USERNAME/monitoring-grafana`
 5. Add environment variables:
    ```
    DOMAIN=monitoring.example.com

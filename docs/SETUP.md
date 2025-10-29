@@ -135,9 +135,12 @@ docker logs monitoring-loki
 
 1. Open: `https://monitoring.example.com`
 2. Login with admin credentials
-3. Verify datasources:
-   - Prometheus (should be green)
-   - Loki (should be green)
+3. Go to: **Configuration** → **Data sources**
+4. Verify datasources:
+   - Prometheus (should show green checkmark)
+   - Loki (should show green checkmark)
+   - **Important**: Click on each datasource and scroll to bottom
+   - Click **"Save & test"** button to verify connection
 
 ## Step 3: Setup DigitalOcean VPC (Optional but Recommended)
 

@@ -36,12 +36,10 @@ This is an **umbrella repository** using Git submodules for each stack:
 
 - **[monitoring-grafana](./grafana/)** - Central monitoring server stack
 - **[monitoring-edge](./edge/)** - **Unified edge agent** with optional exporters via Docker Compose profiles (PostgreSQL, PgBouncer, Caddy)
-- ~~**[monitoring-edge-basic](./edge-basic/)**~~ - DEPRECATED, replaced by monitoring-edge
-- ~~**[monitoring-edge-postgres](./edge-postgres/)**~~ - DEPRECATED, replaced by monitoring-edge
 
 Each submodule is a separate repository that can be deployed independently via Portainer GitOps.
 
-> **Migration Note:** The new `monitoring-edge` stack replaces both `edge-basic` and `edge-postgres` using Docker Compose profiles for optional components. See the [edge README](./edge/README.md) for details.
+> **Note:** The `monitoring-edge` stack uses Docker Compose profiles for optional components (PostgreSQL, PgBouncer, Caddy). See the [edge README](./edge/README.md) for details.
 
 ## Quick Start
 

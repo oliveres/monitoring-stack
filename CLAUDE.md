@@ -8,8 +8,6 @@ This is an **umbrella repository** for a distributed monitoring stack using Git 
 
 - `monitoring-grafana` - Central server with Grafana, Prometheus, Loki, Caddy
 - `monitoring-edge` - Unified edge agent with optional exporters (PostgreSQL, PgBouncer, Caddy)
-- ~~`monitoring-edge-basic`~~ - DEPRECATED, replaced by `monitoring-edge`
-- ~~`monitoring-edge-postgres`~~ - DEPRECATED, replaced by `monitoring-edge`
 
 Each submodule is deployed independently via Portainer GitOps to different servers.
 
@@ -23,9 +21,7 @@ monitoring-stack/           # This umbrella repo (documentation only)
 │   ├── VPC-SETUP.md       # DigitalOcean VPC configuration
 │   └── TROUBLESHOOTING.md # Common issues
 ├── grafana/               # Git submodule → monitoring-grafana repo
-├── edge/                  # Git submodule → monitoring-edge repo (unified)
-├── edge-basic/            # DEPRECATED - to be removed
-└── edge-postgres/         # DEPRECATED - to be removed
+└── edge/                  # Git submodule → monitoring-edge repo (unified)
 ```
 
 ## Important Notes

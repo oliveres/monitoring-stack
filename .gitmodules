@@ -5,9 +5,7 @@
 #
 # Current submodules:
 #   - grafana: Central monitoring server (Grafana, Prometheus, Loki, Caddy)
-#   - edge: Unified edge stack with optional exporters (replaces edge-basic and edge-postgres)
-#   - edge-basic: DEPRECATED - use 'edge' instead
-#   - edge-postgres: DEPRECATED - use 'edge' instead
+#   - edge: Unified edge stack with optional exporters (PostgreSQL, PgBouncer, Caddy)
 #
 # To add new submodules (replace YOUR-USERNAME with your GitHub username):
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
@@ -15,12 +13,6 @@
 [submodule "grafana"]
 	path = grafana
 	url = https://github.com/oliveres/monitoring-grafana.git
-[submodule "edge-basic"]
-	path = edge-basic
-	url = https://github.com/oliveres/monitoring-edge-basic.git
-[submodule "edge-postgres"]
-	path = edge-postgres
-	url = https://github.com/oliveres/monitoring-edge-postgres.git
 [submodule "edge"]
 	path = edge
 	url = https://github.com/oliveres/monitoring-edge.git

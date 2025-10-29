@@ -186,7 +186,7 @@ COMPOSE_PROFILES=postgres,pgbouncer,caddy
 # PostgreSQL/TimescaleDB (requires 'postgres' profile)
 POSTGRES_DATA_SOURCE_NAME=postgresql://user:pass@host:5432/db?sslmode=disable
 POSTGRES_EXPORTER_TARGET=postgres-exporter:9187
-POSTGRES_NETWORK=postgres-network  # External Docker network
+PROD_NETWORK=production-network  # External Docker network (reaches PostgreSQL, PgBouncer, Caddy, etc.)
 
 # PgBouncer (requires 'pgbouncer' profile)
 PGBOUNCER_EXPORTER_CONN_STRING=postgresql://user:pass@host:6432/pgbouncer?sslmode=disable
@@ -233,7 +233,7 @@ COMPOSE_PROFILES=postgres,pgbouncer,caddy docker compose up -d
 
 - **Baseline deployment** (no profiles) includes: Prometheus agent, Promtail, cAdvisor, Node Exporter
 - **Optional components** start only when their profile is active AND target env var is set
-- **External networks** (e.g., `POSTGRES_NETWORK`) must exist before deploying with profiles
+- **External networks** (e.g., `PROD_NETWORK`) must exist before deploying with profiles
 - **Caddy profile** does NOT launch Caddy container - it only enables scraping of existing Caddy instance
 
 ## Deployment Workflow

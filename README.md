@@ -35,10 +35,13 @@ This monitoring stack uses a **distributed architecture** with:
 This is an **umbrella repository** using Git submodules for each stack:
 
 - **[monitoring-grafana](./grafana/)** - Central monitoring server stack
-- **[monitoring-edge-basic](./edge-basic/)** - Edge agent for standard Docker hosts
-- **[monitoring-edge-postgres](./edge-postgres/)** - Edge agent with PostgreSQL monitoring
+- **[monitoring-edge](./edge/)** - **Unified edge agent** with optional exporters via Docker Compose profiles (PostgreSQL, PgBouncer, Caddy)
+- ~~**[monitoring-edge-basic](./edge-basic/)**~~ - DEPRECATED, replaced by monitoring-edge
+- ~~**[monitoring-edge-postgres](./edge-postgres/)**~~ - DEPRECATED, replaced by monitoring-edge
 
 Each submodule is a separate repository that can be deployed independently via Portainer GitOps.
+
+> **Migration Note:** The new `monitoring-edge` stack replaces both `edge-basic` and `edge-postgres` using Docker Compose profiles for optional components. See the [edge README](./edge/README.md) for details.
 
 ## Quick Start
 
@@ -60,22 +63,19 @@ Configure environment variables:
 
 ### 2. Edge Agent Deployment
 
-Deploy on each Docker host:
+Deploy on každém Docker hostiteli pomocí sjednoceného stacku:
 
-**For standard hosts:**
 ```bash
-Repository: https://github.com/YOUR-USERNAME/monitoring-edge-basic
+Repository: https://github.com/YOUR-USERNAME/monitoring-edge
+# Aktivace exportérů přes COMPOSE_PROFILES (např. postgres,pgbouncer)
 ```
 
-**For hosts with PostgreSQL:**
-```bash
-Repository: https://github.com/YOUR-USERNAME/monitoring-edge-postgres
-```
+Legacy repozitáře `monitoring-edge-basic` a `monitoring-edge-postgres` zůstávají dostupné pro backwards compatibility, ale nové instalace používají `monitoring-edge`.
 
-Configure environment variables:
+Konfiguruj environment proměnné:
 - `CENTRAL_PROMETHEUS_URL` - URL to central Prometheus (e.g., http://prometheus:9090)
 - `CENTRAL_LOKI_URL` - URL to central Loki (e.g., http://loki:3100)
-- `POSTGRES_DATA_SOURCE_NAME` - PostgreSQL connection string (postgres stack only)
+- `POSTGRES_DATA_SOURCE_NAME` - PostgreSQL connection string (if postgres profile enabled)
 
 ## Features
 
@@ -127,6 +127,7 @@ To add submodules (for maintainers):
 
 ```bash
 git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
+git submodule add https://github.com/YOUR-USERNAME/monitoring-edge.git edge
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
 git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres
 ```

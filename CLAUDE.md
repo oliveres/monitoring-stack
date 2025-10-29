@@ -7,8 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is an **umbrella repository** for a distributed monitoring stack using Git submodules. The actual stack implementations are in separate repositories:
 
 - `monitoring-grafana` - Central server with Grafana, Prometheus, Loki, Caddy
-- `monitoring-edge-basic` - Edge agent with exporters and log collectors
-- `monitoring-edge-postgres` - Edge agent with PostgreSQL monitoring
+- `monitoring-edge` - Unified edge agent with optional exporters (PostgreSQL, PgBouncer, Caddy)
+- ~~`monitoring-edge-basic`~~ - DEPRECATED, replaced by `monitoring-edge`
+- ~~`monitoring-edge-postgres`~~ - DEPRECATED, replaced by `monitoring-edge`
 
 Each submodule is deployed independently via Portainer GitOps to different servers.
 
@@ -22,8 +23,9 @@ monitoring-stack/           # This umbrella repo (documentation only)
 │   ├── VPC-SETUP.md       # DigitalOcean VPC configuration
 │   └── TROUBLESHOOTING.md # Common issues
 ├── grafana/               # Git submodule → monitoring-grafana repo
-├── edge-basic/            # Git submodule → monitoring-edge-basic repo
-└── edge-postgres/         # Git submodule → monitoring-edge-postgres repo
+├── edge/                  # Git submodule → monitoring-edge repo (unified)
+├── edge-basic/            # DEPRECATED - to be removed
+└── edge-postgres/         # DEPRECATED - to be removed
 ```
 
 ## Important Notes
@@ -42,9 +44,8 @@ git clone --recurse-submodules https://github.com/USER/monitoring-stack.git
 
 ### Add Submodules (First Time Setup)
 ```bash
-git submodule add https://github.com/USER/monitoring-grafana.git central
-git submodule add https://github.com/USER/monitoring-edge-basic.git edge-basic
-git submodule add https://github.com/USER/monitoring-edge-postgres.git edge-postgres
+git submodule add https://github.com/USER/monitoring-grafana.git grafana
+git submodule add https://github.com/USER/monitoring-edge.git edge
 git commit -m "Add monitoring stack submodules"
 ```
 
@@ -54,17 +55,17 @@ git commit -m "Add monitoring stack submodules"
 git submodule update --remote --merge
 
 # Update specific submodule
-cd central
+cd grafana  # or edge
 git pull origin main
 cd ..
-git add central
-git commit -m "Update central stack"
+git add grafana
+git commit -m "Update grafana stack"
 ```
 
 ### Work on Submodule
 ```bash
 # Enter submodule directory
-cd central
+cd grafana  # or edge
 
 # Make changes
 vim docker-compose.yml
@@ -76,8 +77,8 @@ git push origin main
 
 # Update umbrella repo to track new commit
 cd ..
-git add central
-git commit -m "Track central stack update"
+git add grafana
+git commit -m "Track grafana stack update"
 git push
 ```
 
@@ -111,7 +112,7 @@ git push
 
 ### Modify Central Stack
 ```bash
-cd central
+cd grafana
 # Edit files (docker-compose.yml, configs, etc.)
 git commit -am "Description of changes"
 git push
@@ -120,7 +121,7 @@ git push
 
 ### Modify Edge Stack
 ```bash
-cd edge-basic  # or edge-postgres
+cd edge
 # Edit files
 git commit -am "Description of changes"
 git push
@@ -160,26 +161,84 @@ BASIC_AUTH_PASSWORD_HASH=$2a$12$...
 VPC_PRIVATE_IP=10.116.0.2
 ```
 
-### Edge Stack (VPC)
+### Edge Stack - Core (Required)
 ```env
-CENTRAL_PROMETHEUS_URL=http://10.116.0.2:9090/api/v1/write
-CENTRAL_LOKI_URL=http://10.116.0.2:3100/loki/api/v1/push
+# Host identification
 HOSTNAME=edge-host-1
-```
 
-### Edge Stack (Remote via HTTPS)
-```env
-CENTRAL_PROMETHEUS_URL=https://monitoring.example.com/prometheus/api/v1/write
-CENTRAL_LOKI_URL=https://monitoring.example.com/loki/api/v1/push
-HOSTNAME=remote-vps-1
+# Central endpoints
+CENTRAL_PROMETHEUS_URL=http://10.116.0.2:9090/api/v1/write  # VPC
+# OR for remote HTTPS:
+# CENTRAL_PROMETHEUS_URL=https://monitoring.example.com/prometheus/api/v1/write
+CENTRAL_LOKI_URL=http://10.116.0.2:3100/loki/api/v1/push    # VPC
+# OR for remote HTTPS:
+# CENTRAL_LOKI_URL=https://monitoring.example.com/loki/api/v1/push
+
+# Basic auth (only for HTTPS endpoints)
 BASIC_AUTH_USER=remote
 BASIC_AUTH_PASSWORD=password
 ```
 
-### PostgreSQL Stack (Additional)
+### Edge Stack - Optional Exporters
+
+Enable optional components using Docker Compose profiles:
+
 ```env
+# Activate profiles (comma-separated)
+COMPOSE_PROFILES=postgres,pgbouncer,caddy
+
+# PostgreSQL/TimescaleDB (requires 'postgres' profile)
 POSTGRES_DATA_SOURCE_NAME=postgresql://user:pass@host:5432/db?sslmode=disable
+POSTGRES_EXPORTER_TARGET=postgres-exporter:9187
+POSTGRES_NETWORK=postgres-network  # External Docker network
+
+# PgBouncer (requires 'pgbouncer' profile)
+PGBOUNCER_EXPORTER_CONN_STRING=postgresql://user:pass@host:6432/pgbouncer?sslmode=disable
+PGBOUNCER_EXPORTER_TARGET=pgbouncer-exporter:9127
+
+# Caddy metrics (requires 'caddy' profile - scrapes external Caddy)
+CADDY_METRICS_TARGET=localhost:2019
 ```
+
+## Docker Compose Profiles (Edge Stack)
+
+The unified edge stack uses Docker Compose profiles to enable optional exporters:
+
+### Available Profiles
+
+| Profile     | Components | Use Case |
+|-------------|------------|----------|
+| (baseline)  | Prometheus, Promtail, cAdvisor, Node Exporter | Basic host and container monitoring |
+| `postgres`  | + PostgreSQL Exporter | PostgreSQL/TimescaleDB databases |
+| `pgbouncer` | + PgBouncer Exporter | PgBouncer connection pooler |
+| `caddy`     | + Caddy scrape job | External Caddy web server |
+
+### Activation
+
+**In Portainer:**
+1. Add stack from Git repository
+2. Set environment variable: `COMPOSE_PROFILES=postgres,pgbouncer` (comma-separated)
+3. Configure required env vars for each profile (see Environment Variables section)
+4. Deploy
+
+**Via CLI:**
+```bash
+# Baseline only
+docker compose up -d
+
+# With PostgreSQL
+COMPOSE_PROFILES=postgres docker compose up -d
+
+# Multiple profiles
+COMPOSE_PROFILES=postgres,pgbouncer,caddy docker compose up -d
+```
+
+### Important Notes
+
+- **Baseline deployment** (no profiles) includes: Prometheus agent, Promtail, cAdvisor, Node Exporter
+- **Optional components** start only when their profile is active AND target env var is set
+- **External networks** (e.g., `POSTGRES_NETWORK`) must exist before deploying with profiles
+- **Caddy profile** does NOT launch Caddy container - it only enables scraping of existing Caddy instance
 
 ## Deployment Workflow
 

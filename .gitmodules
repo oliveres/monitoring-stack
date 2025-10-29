@@ -3,10 +3,15 @@
 # To clone with submodules:
 #   git clone --recurse-submodules <repo-url>
 #
-# To add submodules (replace YOUR-USERNAME with your GitHub username):
+# Current submodules:
+#   - grafana: Central monitoring server (Grafana, Prometheus, Loki, Caddy)
+#   - edge: Unified edge stack with optional exporters (replaces edge-basic and edge-postgres)
+#   - edge-basic: DEPRECATED - use 'edge' instead
+#   - edge-postgres: DEPRECATED - use 'edge' instead
+#
+# To add new submodules (replace YOUR-USERNAME with your GitHub username):
 #   git submodule add https://github.com/YOUR-USERNAME/monitoring-grafana.git grafana
-#   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-basic.git edge-basic
-#   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge-postgres.git edge-postgres
+#   git submodule add https://github.com/YOUR-USERNAME/monitoring-edge.git edge
 [submodule "grafana"]
 	path = grafana
 	url = https://github.com/oliveres/monitoring-grafana.git
@@ -16,3 +21,6 @@
 [submodule "edge-postgres"]
 	path = edge-postgres
 	url = https://github.com/oliveres/monitoring-edge-postgres.git
+[submodule "edge"]
+	path = edge
+	url = https://github.com/oliveres/monitoring-edge.git

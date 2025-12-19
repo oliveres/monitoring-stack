@@ -17,3 +17,6 @@ Thumbs.db
 # Temporary files
 *.log
 *.tmp
+
+# AI agent guidelines (local only)
+AGENTS.md

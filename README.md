@@ -88,6 +88,9 @@ Konfiguruj environment proměnné:
 - **Real-time streaming**: Promtail remote push to Loki
 - **Disaster recovery**: Logs preserved even if containers are deleted
 - **Centralized search**: All logs searchable from single Grafana instance
+- **Hybrid logging**: Two methods available:
+  - **Promtail** - Default collector for standard containers (requires `logging: promtail` label)
+  - **Loki Docker Driver** - Streaming without disk writes for high-traffic containers (e.g., Caddy, nginx)
 
 ### Monitoring Targets
 - Docker containers (cAdvisor)
